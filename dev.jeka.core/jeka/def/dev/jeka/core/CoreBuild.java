@@ -18,8 +18,11 @@ import dev.jeka.core.tool.JkClass;
 import dev.jeka.core.tool.JkConstants;
 import dev.jeka.core.tool.JkEnv;
 import dev.jeka.core.tool.JkInit;
+import dev.jeka.core.tool.builtins.jacoco.JkPluginJacoco;
 import dev.jeka.core.tool.builtins.java.JkPluginJava;
 import dev.jeka.core.tool.builtins.repos.JkPluginGpg;
+import dev.jeka.core.tool.builtins.sonar.JkPluginSonar;
+import dev.jeka.core.tool.builtins.sonar.JkSonar;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -44,6 +47,10 @@ public class CoreBuild extends JkClass {
     final JkPluginJava java = getPlugin(JkPluginJava.class);
 
     final JkPluginGpg gpg = getPlugin(JkPluginGpg.class);
+
+    final JkPluginJacoco jacoco = getPlugin(JkPluginJacoco.class);
+
+    final JkPluginSonar sonar = getPlugin(JkPluginSonar.class);
 
     private final JkGitWrapper git;
 
@@ -120,6 +127,10 @@ public class CoreBuild extends JkClass {
                             .setUrl("https://github.com/jerkar/jeka.git").__
                         .addApache2License()
                         .addGithubDeveloper("djeang", "djeangdev@yahoo.fr");
+
+            sonar
+                .setProp(JkSonar.HOST_URL, "https://sonarqube.ow2.org")
+                .setProp(JkSonar.BRANCH, "master");
         }
 
     private void tagIfReleaseMentionedInCurrentCommit() {
